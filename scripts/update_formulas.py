@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -153,10 +154,13 @@ end
 def main() -> None:
     FORMULA_DIR.mkdir(parents=True, exist_ok=True)
     packages = json.loads(PACKAGES_FILE.read_text(encoding="utf-8"))
+    only_names = set(sys.argv[1:])
     self_releases_cache: dict[str, dict] = {}
 
     for pkg in packages:
         name = pkg["name"]
+        if only_names and name not in only_names:
+            continue
         repo = pkg["repo"]
 
         if pkg.get("version_from_self_release"):

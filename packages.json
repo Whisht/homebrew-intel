@@ -11,6 +11,14 @@
     "fish_completion": ["autocomplete/bat.fish"]
   },
   {
+    "name": "carapace",
+    "desc": "Multi-shell multi-command argument completer",
+    "repo": "carapace-sh/carapace-bin",
+    "homepage": "https://carapace.sh",
+    "asset_pattern": "carapace-bin_{version}_darwin_amd64.tar.gz",
+    "bin": ["carapace"]
+  },
+  {
     "name": "curl",
     "desc": "Get a file from an HTTP, HTTPS or FTP server (static standalone build)",
     "repo": "stunnel/static-curl",
