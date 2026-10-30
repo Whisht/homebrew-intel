@@ -6,8 +6,6 @@ class Curl < Formula
   sha256 "be645642d239a625c9f06a823ae0a62e2acb4788309435bf8d91e7b6bd197238"
 
   def install
-    bin.install "bin/curl"
-    bin.install "bin/trurl"
-    man1.install Dir["share/man/man1/*.1"]
+    bin.install "curl"
   end
 end

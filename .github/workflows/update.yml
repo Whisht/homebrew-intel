@@ -123,6 +123,7 @@ jobs:
             NO_GETTEXT=YesPlease \
             NO_TCLTK=YesPlease \
             NO_PCRE2=YesPlease \
+            NO_RUST=YesPlease \
             APPLE_COMMON_CRYPTO=1 \
             CURLDIR=/usr \
             EXPATDIR=/usr \
@@ -134,6 +135,7 @@ jobs:
             NO_GETTEXT=YesPlease \
             NO_TCLTK=YesPlease \
             NO_PCRE2=YesPlease \
+            NO_RUST=YesPlease \
             APPLE_COMMON_CRYPTO=1 \
             CURLDIR=/usr \
             EXPATDIR=/usr \
@@ -164,12 +166,15 @@ jobs:
             -DBUILD_SHARED_LIBS=OFF \
             -DLIBRESSL_APPS=OFF \
             -DLIBRESSL_TESTS=OFF \
+            -DOPENSSLDIR=/etc/ssl \
             -DCMAKE_INSTALL_PREFIX=/tmp/ssl-static
           cmake --build /tmp/libressl-build -j4
           cmake --install /tmp/libressl-build
           curl -fsSL "https://ftpmirror.gnu.org/gnu/wget/wget-${VERSION}.tar.gz" | tar -xz -C /tmp
           cd "/tmp/wget-${VERSION}"
           ./configure --host=x86_64-apple-darwin \
+            PKG_CONFIG=/usr/bin/false \
+            ac_cv_func_strchrnul=no \
             CC="clang -arch x86_64 -mmacosx-version-min=11.0" \
             CFLAGS="-O2 -I/tmp/ssl-static/include" \
             LDFLAGS="-L/tmp/ssl-static/lib" \
@@ -179,8 +184,8 @@ jobs:
             --disable-nls \
             --without-libpsl \
             --without-libidn \
-            --without-pcre2 \
-            --without-pcre \
+            --disable-pcre2 \
+            --disable-pcre \
             --disable-iri \
             --prefix=/tmp/wget-install
           make -j4

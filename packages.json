@@ -16,8 +16,7 @@
     "repo": "stunnel/static-curl",
     "homepage": "https://curl.se",
     "asset_pattern": "curl-macos-x86_64-{tag}.tar.xz",
-    "bin": ["bin/curl", "bin/trurl"],
-    "man1_glob": "share/man/man1/*.1"
+    "bin": ["curl"]
   },
   {
     "name": "git",
