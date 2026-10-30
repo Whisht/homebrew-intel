@@ -26,8 +26,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if ! gh release view prebuilt-intel >/dev/null 2>&1; then
-            gh release create prebuilt-intel \
+          if ! gh release view prebuilt-intel -R "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release create prebuilt-intel -R "${{ github.repository }}" \
               --title "Prebuilt Intel macOS Binaries" \
               --notes "Automatically compiled x86_64-apple-darwin binaries for upstream projects that do not publish macOS release assets (e.g., eza, btop)."
           fi
@@ -40,7 +40,7 @@ jobs:
           TAG=$(gh api repos/eza-community/eza/releases/latest --jq .tag_name)
           VERSION="${TAG#v}"
           ASSET="eza-${TAG}-x86_64-apple-darwin.tar.gz"
-          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+          if gh release view prebuilt-intel -R "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
             echo "eza $TAG already built in prebuilt-intel release."
             exit 0
           fi
@@ -54,7 +54,7 @@ jobs:
           curl -fsSL "https://github.com/eza-community/eza/releases/download/${TAG}/completions-${VERSION}.tar.gz" | tar -xz -C /tmp/eza-pkg/completions --strip-components=2 || true
           curl -fsSL "https://github.com/eza-community/eza/releases/download/${TAG}/man-${VERSION}.tar.gz" | tar -xz -C /tmp/eza-pkg/man --strip-components=2 || true
           tar -czf "/tmp/${ASSET}" -C /tmp/eza-pkg .
-          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
       - name: Build btop (x86_64-apple-darwin) if latest version missing
         env:
@@ -63,7 +63,7 @@ jobs:
         run: |
           TAG=$(gh api repos/aristocratos/btop/releases/latest --jq .tag_name)
           ASSET="btop-${TAG}-x86_64-apple-darwin.tar.gz"
-          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+          if gh release view prebuilt-intel -R "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
             echo "btop $TAG already built in prebuilt-intel release."
             exit 0
           fi
@@ -75,7 +75,7 @@ jobs:
           cmake --build build -j4
           cmake --install build
           tar -czf "/tmp/${ASSET}" -C /tmp/btop-pkg .
-          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
       - name: Build git-delta (x86_64-apple-darwin) if latest version missing
         env:
@@ -84,7 +84,7 @@ jobs:
         run: |
           TAG=$(gh api repos/dandavison/delta/releases/latest --jq .tag_name)
           ASSET="delta-${TAG}-x86_64-apple-darwin.tar.gz"
-          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+          if gh release view prebuilt-intel -R "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
             echo "git-delta $TAG already built in prebuilt-intel release."
             exit 0
           fi
@@ -96,7 +96,7 @@ jobs:
           mkdir -p /tmp/delta-pkg
           cp target/x86_64-apple-darwin/release/delta /tmp/delta-pkg/
           tar -czf "/tmp/${ASSET}" -C /tmp/delta-pkg .
-          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
   update:
     needs: build-missing-intel-binaries
