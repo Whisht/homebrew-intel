@@ -1,0 +1,226 @@
+[
+  {
+    "name": "bat",
+    "desc": "Clone of cat(1) with syntax highlighting and Git integration",
+    "repo": "sharkdp/bat",
+    "asset_pattern": "bat-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["bat"],
+    "man1": ["bat.1"],
+    "zsh_completion": ["autocomplete/bat.zsh"],
+    "bash_completion": ["autocomplete/bat.bash"],
+    "fish_completion": ["autocomplete/bat.fish"]
+  },
+  {
+    "name": "fzf",
+    "desc": "Command-line fuzzy finder written in Go",
+    "repo": "junegunn/fzf",
+    "asset_pattern": "fzf-{version}-darwin_amd64.tar.gz",
+    "bin": ["fzf"]
+  },
+  {
+    "name": "gh",
+    "desc": "GitHub command-line tool",
+    "repo": "cli/cli",
+    "asset_pattern": "gh_{version}_macOS_amd64.zip",
+    "bin": ["bin/gh"],
+    "man1_glob": "share/man/man1/*.1"
+  },
+  {
+    "name": "git-lfs",
+    "desc": "Git extension for versioning large files",
+    "repo": "git-lfs/git-lfs",
+    "asset_pattern": "git-lfs-darwin-amd64-{tag}.zip",
+    "bin": ["git-lfs"],
+    "man1_glob": "man/man1/*.1"
+  },
+  {
+    "name": "jj",
+    "desc": "Git-compatible DVCS that is both simple and powerful",
+    "repo": "jj-vcs/jj",
+    "asset_pattern": "jj-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["jj"]
+  },
+  {
+    "name": "pandoc",
+    "desc": "Swiss-army knife of markup format conversion",
+    "repo": "jgm/pandoc",
+    "asset_pattern": "pandoc-{version}-x86_64-macOS.zip",
+    "bin": ["bin/pandoc", "bin/pandoc-lua", "bin/pandoc-server"],
+    "man1_glob": "share/man/man1/*.1"
+  },
+  {
+    "name": "ripgrep",
+    "desc": "Search tool like grep and The Silver Searcher",
+    "repo": "BurntSushi/ripgrep",
+    "asset_pattern": "ripgrep-{version}-x86_64-apple-darwin.tar.gz",
+    "bin": ["rg"],
+    "man1": ["doc/rg.1"],
+    "zsh_completion": ["complete/_rg"],
+    "bash_completion": ["complete/rg.bash"],
+    "fish_completion": ["complete/rg.fish"]
+  },
+  {
+    "name": "starship",
+    "desc": "Cross-shell prompt for astronauts",
+    "repo": "starship/starship",
+    "asset_pattern": "starship-x86_64-apple-darwin.tar.gz",
+    "bin": ["starship"]
+  },
+  {
+    "name": "yazi",
+    "desc": "Blazing fast terminal file manager written in Rust, based on async I/O",
+    "repo": "sxyazi/yazi",
+    "asset_pattern": "yazi-x86_64-apple-darwin.zip",
+    "bin": ["yazi", "ya"],
+    "zsh_completion": ["completions/_yazi", "completions/_ya"],
+    "bash_completion": ["completions/yazi.bash", "completions/ya.bash"],
+    "fish_completion": ["completions/yazi.fish", "completions/ya.fish"]
+  },
+  {
+    "name": "zoxide",
+    "desc": "Shell extension to navigate your filesystem faster",
+    "repo": "ajeetdsouza/zoxide",
+    "asset_pattern": "zoxide-{version}-x86_64-apple-darwin.tar.gz",
+    "bin": ["zoxide"],
+    "man1_glob": "man/man1/*.1",
+    "zsh_completion": ["completions/_zoxide"],
+    "bash_completion": ["completions/zoxide.bash"],
+    "fish_completion": ["completions/zoxide.fish"]
+  },
+  {
+    "name": "fd",
+    "desc": "Simple, fast and user-friendly alternative to find",
+    "repo": "sharkdp/fd",
+    "asset_pattern": "fd-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["fd"],
+    "man1": ["fd.1"],
+    "zsh_completion": ["autocomplete/_fd"],
+    "bash_completion": ["autocomplete/fd.bash"],
+    "fish_completion": ["autocomplete/fd.fish"]
+  },
+  {
+    "name": "lazygit",
+    "desc": "Simple terminal UI for git commands",
+    "repo": "jesseduffield/lazygit",
+    "asset_pattern": "lazygit_{version}_darwin_x86_64.tar.gz",
+    "bin": ["lazygit"]
+  },
+  {
+    "name": "lazydocker",
+    "desc": "Lazier way to manage everything docker",
+    "repo": "jesseduffield/lazydocker",
+    "asset_pattern": "lazydocker_{version}_Darwin_x86_64.tar.gz",
+    "bin": ["lazydocker"]
+  },
+  {
+    "name": "zellij",
+    "desc": "Pluggable terminal workspace, with terminal multiplexer as the base feature",
+    "repo": "zellij-org/zellij",
+    "asset_pattern": "zellij-x86_64-apple-darwin.tar.gz",
+    "bin": ["zellij"]
+  },
+  {
+    "name": "neovim",
+    "desc": "Ambitious Vim-fork focused on extensibility and usability",
+    "repo": "neovim/neovim",
+    "asset_pattern": "nvim-macos-x86_64.tar.gz",
+    "install_prefix": true
+  },
+  {
+    "name": "jq",
+    "desc": "Lightweight and flexible command-line JSON processor",
+    "repo": "jqlang/jq",
+    "asset_pattern": "jq-macos-amd64",
+    "bin_map": {
+      "jq-macos-amd64": "jq"
+    }
+  },
+  {
+    "name": "fastfetch",
+    "desc": "Like neofetch, but much faster because written mostly in C",
+    "repo": "fastfetch-cli/fastfetch",
+    "asset_pattern": "fastfetch-macos-universal.tar.gz",
+    "bin": ["usr/bin/fastfetch", "usr/bin/flashfetch"],
+    "man1": ["usr/share/man/man1/fastfetch.1"],
+    "zsh_completion": ["usr/share/zsh/site-functions/_fastfetch"],
+    "bash_completion": ["usr/share/bash-completion/completions/fastfetch"],
+    "fish_completion": ["usr/share/fish/vendor_completions.d/fastfetch.fish"]
+  },
+  {
+    "name": "gum",
+    "desc": "Tool for glamorous shell scripts",
+    "repo": "charmbracelet/gum",
+    "asset_pattern": "gum_{version}_Darwin_x86_64.tar.gz",
+    "bin": ["gum"],
+    "man1_glob": "manpages/*.1*",
+    "zsh_completion": ["completions/gum.zsh"],
+    "bash_completion": ["completions/gum.bash"],
+    "fish_completion": ["completions/gum.fish"]
+  },
+  {
+    "name": "glow",
+    "desc": "Render markdown on the CLI",
+    "repo": "charmbracelet/glow",
+    "asset_pattern": "glow_{version}_Darwin_x86_64.tar.gz",
+    "bin": ["glow"],
+    "man1_glob": "manpages/*.1*",
+    "zsh_completion": ["completions/glow.zsh"],
+    "bash_completion": ["completions/glow.bash"],
+    "fish_completion": ["completions/glow.fish"]
+  },
+  {
+    "name": "dust",
+    "desc": "More intuitive version of du in rust",
+    "repo": "bootandy/dust",
+    "asset_pattern": "dust-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["dust"]
+  },
+  {
+    "name": "duf",
+    "desc": "Disk Usage/Free Utility - a better 'df' alternative",
+    "repo": "muesli/duf",
+    "asset_pattern": "duf_{version}_darwin_x86_64.tar.gz",
+    "bin": ["duf"]
+  },
+  {
+    "name": "bottom",
+    "desc": "Yet another cross-platform graphical process/system monitor",
+    "repo": "ClementTsang/bottom",
+    "asset_pattern": "bottom_x86_64-apple-darwin.tar.gz",
+    "bin": ["btm"],
+    "zsh_completion": ["completion/_btm"],
+    "bash_completion": ["completion/btm.bash"],
+    "fish_completion": ["completion/btm.fish"]
+  },
+  {
+    "name": "hyperfine",
+    "desc": "Command-line benchmarking tool",
+    "repo": "sharkdp/hyperfine",
+    "asset_pattern": "hyperfine-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["hyperfine"],
+    "man1": ["hyperfine.1"],
+    "zsh_completion": ["autocomplete/_hyperfine"],
+    "bash_completion": ["autocomplete/hyperfine.bash"],
+    "fish_completion": ["autocomplete/hyperfine.fish"]
+  },
+  {
+    "name": "xh",
+    "desc": "Friendly and fast tool for sending HTTP requests",
+    "repo": "ducaale/xh",
+    "asset_pattern": "xh-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["xh"],
+    "man1": ["doc/xh.1"],
+    "zsh_completion": ["completions/_xh"],
+    "bash_completion": ["completions/xh.bash"],
+    "fish_completion": ["completions/xh.fish"]
+  },
+  {
+    "name": "tealdeer",
+    "desc": "Very fast implementation of tldr in Rust",
+    "repo": "tealdeer-rs/tealdeer",
+    "asset_pattern": "tealdeer-macos-x86_64",
+    "bin_map": {
+      "tealdeer-macos-x86_64": "tldr"
+    }
+  }
+]
