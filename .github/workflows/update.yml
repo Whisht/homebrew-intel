@@ -33,6 +33,7 @@ jobs:
           fi
 
       - name: Build eza (x86_64-apple-darwin) if latest version missing
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MACOSX_DEPLOYMENT_TARGET: "11.0"
@@ -57,6 +58,7 @@ jobs:
           gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
       - name: Build btop (x86_64-apple-darwin) if latest version missing
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MACOSX_DEPLOYMENT_TARGET: "11.0"
@@ -78,6 +80,7 @@ jobs:
           gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
       - name: Build git-delta (x86_64-apple-darwin) if latest version missing
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MACOSX_DEPLOYMENT_TARGET: "11.0"
