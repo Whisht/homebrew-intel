@@ -103,6 +103,10 @@ def build_install_lines(pkg: dict, version: str, tag: str) -> list[str]:
         lines.append('prefix.install Dir["*"]')
         return lines
 
+    if prefix_dir := pkg.get("install_prefix_dir"):
+        lines.append(f'prefix.install Dir["{prefix_dir}/*"]')
+        return lines
+
     for src, dst in pkg.get("bin_map", {}).items():
         formatted_src = src.format(version=version, tag=tag)
         lines.append(f'bin.install "{formatted_src}" => "{dst}"')

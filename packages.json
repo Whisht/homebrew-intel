@@ -19,6 +19,14 @@
     "bin": ["carapace"]
   },
   {
+    "name": "fish",
+    "desc": "User-friendly command-line shell for UNIX-like operating systems",
+    "repo": "fish-shell/fish-shell",
+    "homepage": "https://fishshell.com",
+    "asset_pattern": "fish-{version}.app.zip",
+    "install_prefix_dir": "Contents/Resources/base/usr/local"
+  },
+  {
     "name": "curl",
     "desc": "Get a file from an HTTP, HTTPS or FTP server (static standalone build)",
     "repo": "stunnel/static-curl",
