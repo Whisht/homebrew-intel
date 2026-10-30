@@ -11,6 +11,36 @@
     "fish_completion": ["autocomplete/bat.fish"]
   },
   {
+    "name": "curl",
+    "desc": "Get a file from an HTTP, HTTPS or FTP server (static standalone build)",
+    "repo": "stunnel/static-curl",
+    "homepage": "https://curl.se",
+    "asset_pattern": "curl-macos-x86_64-{tag}.tar.xz",
+    "bin": ["bin/curl", "bin/trurl"],
+    "man1_glob": "share/man/man1/*.1"
+  },
+  {
+    "name": "git",
+    "desc": "Distributed revision control system (standalone Intel build)",
+    "repo": "git/git",
+    "homepage": "https://git-scm.com",
+    "self_hosted_release": "prebuilt-intel",
+    "version_from_self_release": true,
+    "asset_pattern": "git-{tag}-x86_64-apple-darwin.tar.gz",
+    "install_prefix": true
+  },
+  {
+    "name": "wget",
+    "desc": "Internet file retriever (standalone Intel build with static OpenSSL)",
+    "repo": "mirror/wget",
+    "homepage": "https://www.gnu.org/software/wget/",
+    "self_hosted_release": "prebuilt-intel",
+    "version_from_self_release": true,
+    "asset_pattern": "wget-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["wget"],
+    "man1": ["wget.1"]
+  },
+  {
     "name": "eza",
     "desc": "Modern, maintained replacement for ls",
     "repo": "eza-community/eza",

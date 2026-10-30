@@ -158,6 +158,37 @@ def main() -> None:
     for pkg in packages:
         name = pkg["name"]
         repo = pkg["repo"]
+
+        if pkg.get("version_from_self_release"):
+            self_tag = pkg["self_hosted_release"]
+            if self_tag not in self_releases_cache:
+                try:
+                    self_releases_cache[self_tag] = fetch_release_by_tag(SELF_REPO, self_tag)
+                except Exception:
+                    self_releases_cache[self_tag] = {"assets": []}
+            assets = self_releases_cache[self_tag].get("assets", [])
+            prefix = f"{name}-v"
+            suffix = "-x86_64-apple-darwin.tar.gz"
+            matched_asset = next(
+                (a for a in assets if a["name"].startswith(prefix) and a["name"].endswith(suffix)),
+                None,
+            )
+            if not matched_asset:
+                print(f"[WARN] Self-hosted asset '{prefix}*{suffix}' not found for {name}")
+                continue
+            tag = matched_asset["name"][len(f"{name}-") : -len(suffix)]
+            version = normalize_version(tag, name)
+            formula_path = FORMULA_DIR / f"{name}.rb"
+            if formula_path.exists() and f'version "{version}"' in formula_path.read_text(encoding="utf-8"):
+                print(f"[SKIP] {name} is already up to date ({version})")
+                continue
+            print(f"[UPDATE] {name} -> {version} ({matched_asset['name']})")
+            sha256 = compute_sha256(matched_asset, assets)
+            download_url = matched_asset["browser_download_url"]
+            formula_content = generate_formula(pkg, version, tag, download_url, sha256)
+            formula_path.write_text(formula_content, encoding="utf-8")
+            continue
+
         try:
             release = fetch_latest_release(repo)
         except Exception as e:

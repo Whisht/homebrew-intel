@@ -101,6 +101,96 @@ jobs:
           tar -czf "/tmp/${ASSET}" -C /tmp/delta-pkg .
           gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
+      - name: Build standalone git (x86_64-apple-darwin) if latest version missing
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          TAG=$(git ls-remote --tags --refs --sort="-v:refname" https://github.com/git/git.git "v2.*" | awk -F/ '!/-(rc|alpha|beta)/ {print $NF; exit}')
+          ASSET="git-${TAG}-x86_64-apple-darwin.tar.gz"
+          if gh release view prebuilt-intel -R "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+            echo "git $TAG already built in prebuilt-intel release."
+            exit 0
+          fi
+          echo "Building $ASSET for x86_64-apple-darwin..."
+          git clone --depth 1 --branch "$TAG" https://github.com/git/git.git /tmp/git-src
+          cd /tmp/git-src
+          make prefix=/usr/local/opt/git \
+            CC="clang -arch x86_64 -mmacosx-version-min=11.0" \
+            CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=11.0" \
+            LDFLAGS="-arch x86_64 -mmacosx-version-min=11.0" \
+            NO_GETTEXT=YesPlease \
+            NO_TCLTK=YesPlease \
+            NO_PCRE2=YesPlease \
+            APPLE_COMMON_CRYPTO=1 \
+            CURLDIR=/usr \
+            EXPATDIR=/usr \
+            ZLIB_PATH=/usr \
+            ICONVDIR=/usr \
+            -j4 all
+          make prefix=/usr/local/opt/git \
+            CC="clang -arch x86_64 -mmacosx-version-min=11.0" \
+            NO_GETTEXT=YesPlease \
+            NO_TCLTK=YesPlease \
+            NO_PCRE2=YesPlease \
+            APPLE_COMMON_CRYPTO=1 \
+            CURLDIR=/usr \
+            EXPATDIR=/usr \
+            ZLIB_PATH=/usr \
+            ICONVDIR=/usr \
+            DESTDIR=/tmp/git-pkg install
+          tar -czf "/tmp/${ASSET}" -C /tmp/git-pkg/usr/local/opt/git .
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
+
+      - name: Build standalone wget (x86_64-apple-darwin) if latest version missing
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          VERSION="1.25.0"
+          TAG="v${VERSION}"
+          ASSET="wget-${TAG}-x86_64-apple-darwin.tar.gz"
+          if gh release view prebuilt-intel -R "${{ github.repository }}" --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+            echo "wget $TAG already built in prebuilt-intel release."
+            exit 0
+          fi
+          echo "Building $ASSET for x86_64-apple-darwin..."
+          curl -fsSL "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.0.0.tar.gz" | tar -xz -C /tmp
+          cmake -S /tmp/libressl-4.0.0 -B /tmp/libressl-build \
+            -DCMAKE_OSX_ARCHITECTURES=x86_64 \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DLIBRESSL_APPS=OFF \
+            -DLIBRESSL_TESTS=OFF \
+            -DCMAKE_INSTALL_PREFIX=/tmp/ssl-static
+          cmake --build /tmp/libressl-build -j4
+          cmake --install /tmp/libressl-build
+          curl -fsSL "https://ftpmirror.gnu.org/gnu/wget/wget-${VERSION}.tar.gz" | tar -xz -C /tmp
+          cd "/tmp/wget-${VERSION}"
+          ./configure --host=x86_64-apple-darwin \
+            CC="clang -arch x86_64 -mmacosx-version-min=11.0" \
+            CFLAGS="-O2 -I/tmp/ssl-static/include" \
+            LDFLAGS="-L/tmp/ssl-static/lib" \
+            OPENSSL_CFLAGS="-I/tmp/ssl-static/include" \
+            OPENSSL_LIBS="/tmp/ssl-static/lib/libssl.a /tmp/ssl-static/lib/libcrypto.a" \
+            --with-ssl=openssl \
+            --disable-nls \
+            --without-libpsl \
+            --without-libidn \
+            --without-pcre2 \
+            --without-pcre \
+            --disable-iri \
+            --prefix=/tmp/wget-install
+          make -j4
+          make install
+          mkdir -p /tmp/wget-pkg
+          cp /tmp/wget-install/bin/wget /tmp/wget-pkg/
+          cp /tmp/wget-install/share/man/man1/wget.1 /tmp/wget-pkg/ || true
+          tar -czf "/tmp/${ASSET}" -C /tmp/wget-pkg .
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
+
   update:
     needs: build-missing-intel-binaries
     runs-on: ubuntu-latest
