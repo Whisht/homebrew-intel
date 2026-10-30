@@ -26,18 +26,21 @@ brew install whisht/intel/yazi
 brew update && brew upgrade
 ```
 
-## 已收录软件列表（共 49 个，已排除底层依赖库）
+## 已收录软件列表（共 52 个，已排除底层依赖库）
 
 ### 1. 本地常用 CLI 工具
 - `bat` (`sharkdp/bat`)
+- `curl` (`stunnel/static-curl` — 静态编译独立 `x86_64` 包，内置 HTTP/3、Zstd、Brotli，零动态库依赖)
 - `eza` (`eza-community/eza` — 云端自动预编译独立 `x86_64` 包，无需 `libgit2` 依赖)
 - `fzf` (`junegunn/fzf`)
 - `gh` (`cli/cli`)
+- `git` (`git/git` — 云端自动预编译独立 `x86_64` 包，无需 `gettext`/`pcre2` 依赖)
 - `git-lfs` (`git-lfs/git-lfs`)
 - `jj` (`jj-vcs/jj`)
 - `pandoc` (`jgm/pandoc`)
 - `ripgrep` (`BurntSushi/ripgrep`)
 - `starship` (`starship/starship`)
+- `wget` (`mirror/wget` — 云端自动静态链接 LibreSSL 预编译独立 `x86_64` 包，零外部动态库依赖)
 - `yazi` (`sxyazi/yazi`)
 - `zoxide` (`ajeetdsouza/zoxide`)
 
