@@ -11,6 +11,19 @@
     "fish_completion": ["autocomplete/bat.fish"]
   },
   {
+    "name": "eza",
+    "desc": "Modern, maintained replacement for ls",
+    "repo": "eza-community/eza",
+    "self_hosted_release": "prebuilt-intel",
+    "asset_pattern": "eza-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["eza"],
+    "man1_glob": "man/*.1",
+    "man5_glob": "man/*.5",
+    "zsh_completion": ["completions/zsh/_eza"],
+    "bash_completion": ["completions/bash/eza"],
+    "fish_completion": ["completions/fish/eza.fish"]
+  },
+  {
     "name": "fzf",
     "desc": "Command-line fuzzy finder written in Go",
     "repo": "junegunn/fzf",
@@ -99,6 +112,15 @@
     "fish_completion": ["autocomplete/fd.fish"]
   },
   {
+    "name": "try",
+    "desc": "Fresh directories for every vibe - manage ephemeral experiment directories",
+    "repo": "tobi/try",
+    "source_tarball": true,
+    "bin_map": {
+      "try.rb": "try"
+    }
+  },
+  {
     "name": "lazygit",
     "desc": "Simple terminal UI for git commands",
     "repo": "jesseduffield/lazygit",
@@ -111,6 +133,32 @@
     "repo": "jesseduffield/lazydocker",
     "asset_pattern": "lazydocker_{version}_Darwin_x86_64.tar.gz",
     "bin": ["lazydocker"]
+  },
+  {
+    "name": "btop",
+    "desc": "Resource monitor that shows usage and stats for processor, memory, disks, network and processes",
+    "repo": "aristocratos/btop",
+    "self_hosted_release": "prebuilt-intel",
+    "asset_pattern": "btop-{tag}-x86_64-apple-darwin.tar.gz",
+    "install_prefix": true
+  },
+  {
+    "name": "herdr",
+    "desc": "Persistent terminal workspace and session multiplexer for coding agents",
+    "repo": "herdrdev/herdr",
+    "asset_pattern": "herdr-macos-x86_64",
+    "bin_map": {
+      "herdr-macos-x86_64": "herdr"
+    }
+  },
+  {
+    "name": "cliamp",
+    "desc": "Retro Winamp-inspired terminal music player",
+    "repo": "bjarneo/cliamp",
+    "asset_pattern": "cliamp-darwin-amd64",
+    "bin_map": {
+      "cliamp-darwin-amd64": "cliamp"
+    }
   },
   {
     "name": "zellij",
@@ -222,5 +270,158 @@
     "bin_map": {
       "tealdeer-macos-x86_64": "tldr"
     }
+  },
+  {
+    "name": "atuin",
+    "desc": "Improved shell history for zsh, bash, fish and nushell",
+    "repo": "atuinsh/atuin",
+    "asset_pattern": "atuin-x86_64-apple-darwin.tar.gz",
+    "bin": ["atuin"]
+  },
+  {
+    "name": "direnv",
+    "desc": "Load/unload environment variables based on $PWD",
+    "repo": "direnv/direnv",
+    "asset_pattern": "direnv.darwin-amd64",
+    "bin_map": {
+      "direnv.darwin-amd64": "direnv"
+    }
+  },
+  {
+    "name": "serpl",
+    "desc": "Simple terminal UI for search and replace, ala VS Code",
+    "repo": "yassinebridi/serpl",
+    "asset_pattern": "serpl-{tag}-macos-x86_64.tar.gz",
+    "bin": ["serpl"]
+  },
+  {
+    "name": "procs",
+    "desc": "Modern replacement for ps written in Rust",
+    "repo": "dalance/procs",
+    "asset_pattern": "procs-{tag}-x86_64-mac.zip",
+    "bin": ["procs"]
+  },
+  {
+    "name": "sd",
+    "desc": "Intuitive find & replace CLI (sed alternative)",
+    "repo": "chmln/sd",
+    "asset_pattern": "sd-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["sd"],
+    "man1": ["sd.1"],
+    "zsh_completion": ["completions/_sd"],
+    "bash_completion": ["completions/sd.bash"],
+    "fish_completion": ["completions/sd.fish"]
+  },
+  {
+    "name": "curlie",
+    "desc": "Power of curl, ease of use of httpie",
+    "repo": "rs/curlie",
+    "asset_pattern": "curlie_{version}_darwin_amd64.tar.gz",
+    "bin": ["curlie"]
+  },
+  {
+    "name": "jnv",
+    "desc": "Interactive JSON filter using jq",
+    "repo": "ynqa/jnv",
+    "asset_pattern": "jnv-x86_64-apple-darwin.tar.xz",
+    "bin": ["jnv"]
+  },
+  {
+    "name": "gojq",
+    "desc": "Pure Go implementation of jq",
+    "repo": "itchyny/gojq",
+    "asset_pattern": "gojq_{tag}_darwin_amd64.zip",
+    "bin": ["gojq"],
+    "zsh_completion": ["_gojq"]
+  },
+  {
+    "name": "fx",
+    "desc": "Terminal JSON viewer and processor",
+    "repo": "antonmedv/fx",
+    "asset_pattern": "fx_darwin_amd64",
+    "bin_map": {
+      "fx_darwin_amd64": "fx"
+    }
+  },
+  {
+    "name": "jless",
+    "desc": "Command-line JSON pager",
+    "repo": "PaulJuliusMartinez/jless",
+    "asset_pattern": "jless-{tag}-x86_64-apple-darwin.zip",
+    "bin": ["jless"]
+  },
+  {
+    "name": "jqp",
+    "desc": "TUI playground to experiment with jq",
+    "repo": "noahgorstein/jqp",
+    "asset_pattern": "jqp_Darwin_x86_64.tar.gz",
+    "bin": ["jqp"]
+  },
+  {
+    "name": "git-delta",
+    "desc": "Syntax-highlighting pager for git, diff, and grep output",
+    "repo": "dandavison/delta",
+    "self_hosted_release": "prebuilt-intel",
+    "asset_pattern": "delta-{tag}-x86_64-apple-darwin.tar.gz",
+    "bin": ["delta"]
+  },
+  {
+    "name": "diffnav",
+    "desc": "Git diff pager based on delta with a file tree, ala GitHub",
+    "repo": "dlvhdr/diffnav",
+    "asset_pattern": "diffnav_Darwin_x86_64.tar.gz",
+    "bin": ["diffnav"]
+  },
+  {
+    "name": "gh-dash",
+    "desc": "Rich terminal UI for GitHub pull requests and issues",
+    "repo": "dlvhdr/gh-dash",
+    "asset_pattern": "gh-dash_{tag}_darwin-amd64",
+    "bin_map": {
+      "gh-dash_{tag}_darwin-amd64": "gh-dash"
+    }
+  },
+  {
+    "name": "svu",
+    "desc": "Semantic Version Utility",
+    "repo": "caarlos0/svu",
+    "asset_pattern": "svu_{version}_darwin_all.tar.gz",
+    "bin": ["svu"],
+    "man1_glob": "manpages/*.1*",
+    "zsh_completion": ["completions/svu.zsh"],
+    "bash_completion": ["completions/svu.bash"],
+    "fish_completion": ["completions/svu.fish"]
+  },
+  {
+    "name": "sesh",
+    "desc": "Smart terminal session manager for tmux",
+    "repo": "joshmedeski/sesh",
+    "asset_pattern": "sesh_Darwin_x86_64.tar.gz",
+    "bin": ["sesh"]
+  },
+  {
+    "name": "k9s",
+    "desc": "Kubernetes CLI To Manage Your Clusters In Style",
+    "repo": "derailed/k9s",
+    "asset_pattern": "k9s_Darwin_amd64.tar.gz",
+    "bin": ["k9s"]
+  },
+  {
+    "name": "freeze",
+    "desc": "Generate images of code and terminal output",
+    "repo": "charmbracelet/freeze",
+    "asset_pattern": "freeze_{version}_Darwin_x86_64.tar.gz",
+    "bin": ["freeze"]
+  },
+  {
+    "name": "vhs",
+    "desc": "Your CLI home video recorder - write terminal GIFs as code",
+    "repo": "charmbracelet/vhs",
+    "asset_pattern": "vhs_{version}_Darwin_x86_64.tar.gz",
+    "bin": ["vhs"],
+    "man1_glob": "manpages/*.1*",
+    "zsh_completion": ["completions/vhs.zsh"],
+    "bash_completion": ["completions/vhs.bash"],
+    "fish_completion": ["completions/vhs.fish"]
   }
 ]

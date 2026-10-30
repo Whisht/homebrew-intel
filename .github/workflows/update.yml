@@ -16,7 +16,90 @@ permissions:
   contents: write
 
 jobs:
+  build-missing-intel-binaries:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure prebuilt-intel release exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view prebuilt-intel >/dev/null 2>&1; then
+            gh release create prebuilt-intel \
+              --title "Prebuilt Intel macOS Binaries" \
+              --notes "Automatically compiled x86_64-apple-darwin binaries for upstream projects that do not publish macOS release assets (e.g., eza, btop)."
+          fi
+
+      - name: Build eza (x86_64-apple-darwin) if latest version missing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          TAG=$(gh api repos/eza-community/eza/releases/latest --jq .tag_name)
+          VERSION="${TAG#v}"
+          ASSET="eza-${TAG}-x86_64-apple-darwin.tar.gz"
+          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+            echo "eza $TAG already built in prebuilt-intel release."
+            exit 0
+          fi
+          echo "Building $ASSET for x86_64-apple-darwin..."
+          rustup target add x86_64-apple-darwin
+          git clone --depth 1 --branch "$TAG" https://github.com/eza-community/eza.git /tmp/eza-src
+          cd /tmp/eza-src
+          cargo build --release --target x86_64-apple-darwin
+          mkdir -p /tmp/eza-pkg/completions /tmp/eza-pkg/man
+          cp target/x86_64-apple-darwin/release/eza /tmp/eza-pkg/
+          curl -fsSL "https://github.com/eza-community/eza/releases/download/${TAG}/completions-${VERSION}.tar.gz" | tar -xz -C /tmp/eza-pkg/completions --strip-components=2 || true
+          curl -fsSL "https://github.com/eza-community/eza/releases/download/${TAG}/man-${VERSION}.tar.gz" | tar -xz -C /tmp/eza-pkg/man --strip-components=2 || true
+          tar -czf "/tmp/${ASSET}" -C /tmp/eza-pkg .
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+
+      - name: Build btop (x86_64-apple-darwin) if latest version missing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          TAG=$(gh api repos/aristocratos/btop/releases/latest --jq .tag_name)
+          ASSET="btop-${TAG}-x86_64-apple-darwin.tar.gz"
+          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+            echo "btop $TAG already built in prebuilt-intel release."
+            exit 0
+          fi
+          echo "Building $ASSET for x86_64-apple-darwin..."
+          brew install coreutils cmake
+          git clone --depth 1 --branch "$TAG" https://github.com/aristocratos/btop.git /tmp/btop-src
+          cd /tmp/btop-src
+          cmake -B build -DBTOP_LTO=OFF -DBTOP_FORTIFY=OFF -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DCMAKE_INSTALL_PREFIX=/tmp/btop-pkg
+          cmake --build build -j4
+          cmake --install build
+          tar -czf "/tmp/${ASSET}" -C /tmp/btop-pkg .
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+
+      - name: Build git-delta (x86_64-apple-darwin) if latest version missing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          TAG=$(gh api repos/dandavison/delta/releases/latest --jq .tag_name)
+          ASSET="delta-${TAG}-x86_64-apple-darwin.tar.gz"
+          if gh release view prebuilt-intel --json assets --jq '.assets[].name' | grep -qx "$ASSET"; then
+            echo "git-delta $TAG already built in prebuilt-intel release."
+            exit 0
+          fi
+          echo "Building $ASSET for x86_64-apple-darwin..."
+          rustup target add x86_64-apple-darwin
+          git clone --depth 1 --branch "$TAG" https://github.com/dandavison/delta.git /tmp/delta-src
+          cd /tmp/delta-src
+          cargo build --release --target x86_64-apple-darwin
+          mkdir -p /tmp/delta-pkg
+          cp target/x86_64-apple-darwin/release/delta /tmp/delta-pkg/
+          tar -czf "/tmp/${ASSET}" -C /tmp/delta-pkg .
+          gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber
+
   update:
+    needs: build-missing-intel-binaries
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

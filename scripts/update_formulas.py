@@ -13,11 +13,12 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 PACKAGES_FILE = ROOT_DIR / "packages.json"
 FORMULA_DIR = ROOT_DIR / "Formula"
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+SELF_REPO = os.environ.get("GITHUB_REPOSITORY", "Whisht/homebrew-intel")
 
 
-def fetch_latest_release(repo: str) -> dict:
-    """Fetch latest release JSON from GitHub API using GITHUB_TOKEN or local gh CLI."""
-    url = f"https://api.github.com/repos/{repo}/releases/latest"
+def github_api(endpoint: str) -> dict:
+    """Fetch JSON from GitHub API using GITHUB_TOKEN or local gh CLI."""
+    url = f"https://api.github.com/{endpoint.lstrip('/')}"
     if GITHUB_TOKEN:
         req = urllib.request.Request(url)
         req.add_header("Accept", "application/vnd.github+json")
@@ -26,10 +27,9 @@ def fetch_latest_release(repo: str) -> dict:
         with urllib.request.urlopen(req, timeout=30) as resp:
             return json.loads(resp.read().decode("utf-8"))
 
-    # Try gh CLI if available locally
     try:
         res = subprocess.run(
-            ["gh", "api", f"repos/{repo}/releases/latest"],
+            ["gh", "api", endpoint],
             capture_output=True,
             text=True,
             check=True,
@@ -41,6 +41,23 @@ def fetch_latest_release(repo: str) -> dict:
         req.add_header("User-Agent", "homebrew-intel-updater")
         with urllib.request.urlopen(req, timeout=30) as resp:
             return json.loads(resp.read().decode("utf-8"))
+
+
+def fetch_latest_release(repo: str) -> dict:
+    return github_api(f"repos/{repo}/releases/latest")
+
+
+def fetch_release_by_tag(repo: str, tag: str) -> dict:
+    return github_api(f"repos/{repo}/releases/tags/{tag}")
+
+
+def compute_url_sha256(url: str) -> str:
+    h = hashlib.sha256()
+    req = urllib.request.Request(url, headers={"User-Agent": "homebrew-intel-updater"})
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        while chunk := resp.read(65536):
+            h.update(chunk)
+    return h.hexdigest().lower()
 
 
 def compute_sha256(asset: dict, all_assets: list[dict]) -> str:
@@ -63,16 +80,7 @@ def compute_sha256(asset: dict, all_assets: list[dict]) -> str:
                     if match:
                         return match.group(1).lower()
 
-    # Fallback: stream download and hash
-    h = hashlib.sha256()
-    req = urllib.request.Request(
-        asset["browser_download_url"],
-        headers={"User-Agent": "homebrew-intel-updater"},
-    )
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        while chunk := resp.read(65536):
-            h.update(chunk)
-    return h.hexdigest().lower()
+    return compute_url_sha256(asset["browser_download_url"])
 
 
 def to_class_name(name: str) -> str:
@@ -88,14 +96,15 @@ def normalize_version(tag: str, pkg_name: str) -> str:
     return v
 
 
-def build_install_lines(pkg: dict) -> list[str]:
+def build_install_lines(pkg: dict, version: str, tag: str) -> list[str]:
     lines: list[str] = []
     if pkg.get("install_prefix"):
         lines.append('prefix.install Dir["*"]')
         return lines
 
     for src, dst in pkg.get("bin_map", {}).items():
-        lines.append(f'bin.install "{src}" => "{dst}"')
+        formatted_src = src.format(version=version, tag=tag)
+        lines.append(f'bin.install "{formatted_src}" => "{dst}"')
 
     for b in pkg.get("bin", []):
         lines.append(f'bin.install "{b}"')
@@ -105,6 +114,9 @@ def build_install_lines(pkg: dict) -> list[str]:
 
     if man1_glob := pkg.get("man1_glob"):
         lines.append(f'man1.install Dir["{man1_glob}"]')
+
+    if man5_glob := pkg.get("man5_glob"):
+        lines.append(f'man5.install Dir["{man5_glob}"]')
 
     for z in pkg.get("zsh_completion", []):
         lines.append(f'zsh_completion.install "{z}" if File.exist?("{z}")')
@@ -118,11 +130,11 @@ def build_install_lines(pkg: dict) -> list[str]:
     return lines
 
 
-def generate_formula(pkg: dict, version: str, download_url: str, sha256: str) -> str:
+def generate_formula(pkg: dict, version: str, tag: str, download_url: str, sha256: str) -> str:
     class_name = to_class_name(pkg["name"])
     desc = pkg.get("desc", f"Prebuilt Intel macOS binary for {pkg['name']}").replace('"', '\\"')
     homepage = pkg.get("homepage", f"https://github.com/{pkg['repo']}")
-    install_body = "\n    ".join(build_install_lines(pkg))
+    install_body = "\n    ".join(build_install_lines(pkg, version, tag))
 
     return f'''class {class_name} < Formula
   desc "{desc}"
@@ -141,6 +153,7 @@ end
 def main() -> None:
     FORMULA_DIR.mkdir(parents=True, exist_ok=True)
     packages = json.loads(PACKAGES_FILE.read_text(encoding="utf-8"))
+    self_releases_cache: dict[str, dict] = {}
 
     for pkg in packages:
         name = pkg["name"]
@@ -153,25 +166,43 @@ def main() -> None:
 
         tag = release["tag_name"]
         version = normalize_version(tag, name)
-        expected_asset = pkg["asset_pattern"].format(version=version, tag=tag)
-
-        assets = release.get("assets", [])
-        matched_asset = next((a for a in assets if a["name"] == expected_asset), None)
-        if not matched_asset:
-            print(f"[WARN] Asset '{expected_asset}' not found in {repo}@{tag}")
-            continue
-
         formula_path = FORMULA_DIR / f"{name}.rb"
+
         if formula_path.exists():
             current_text = formula_path.read_text(encoding="utf-8")
             if f'version "{version}"' in current_text:
                 print(f"[SKIP] {name} is already up to date ({version})")
                 continue
 
+        if pkg.get("source_tarball"):
+            download_url = f"https://github.com/{repo}/archive/refs/tags/{tag}.tar.gz"
+            print(f"[UPDATE] {name} -> {version} (source tarball)")
+            sha256 = compute_url_sha256(download_url)
+            formula_content = generate_formula(pkg, version, tag, download_url, sha256)
+            formula_path.write_text(formula_content, encoding="utf-8")
+            continue
+
+        expected_asset = pkg["asset_pattern"].format(version=version, tag=tag)
+
+        if self_tag := pkg.get("self_hosted_release"):
+            if self_tag not in self_releases_cache:
+                try:
+                    self_releases_cache[self_tag] = fetch_release_by_tag(SELF_REPO, self_tag)
+                except Exception:
+                    self_releases_cache[self_tag] = {"assets": []}
+            assets = self_releases_cache[self_tag].get("assets", [])
+        else:
+            assets = release.get("assets", [])
+
+        matched_asset = next((a for a in assets if a["name"] == expected_asset), None)
+        if not matched_asset:
+            print(f"[WARN] Asset '{expected_asset}' not found for {name}@{tag}")
+            continue
+
         print(f"[UPDATE] {name} -> {version} ({expected_asset})")
         sha256 = compute_sha256(matched_asset, assets)
         download_url = matched_asset["browser_download_url"]
-        formula_content = generate_formula(pkg, version, download_url, sha256)
+        formula_content = generate_formula(pkg, version, tag, download_url, sha256)
         formula_path.write_text(formula_content, encoding="utf-8")
 
 
