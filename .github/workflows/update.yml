@@ -70,10 +70,9 @@ jobs:
             exit 0
           fi
           echo "Building $ASSET for x86_64-apple-darwin..."
-          brew install coreutils cmake
           git clone --depth 1 --branch "$TAG" https://github.com/aristocratos/btop.git /tmp/btop-src
           cd /tmp/btop-src
-          cmake -B build -DBTOP_LTO=OFF -DBTOP_FORTIFY=OFF -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DCMAKE_INSTALL_PREFIX=/tmp/btop-pkg
+          cmake -B build -DBTOP_GPU=OFF -DBUILD_TESTING=OFF -DBTOP_LTO=OFF -DBTOP_FORTIFY=OFF -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DCMAKE_INSTALL_PREFIX=/tmp/btop-pkg
           cmake --build build -j4
           cmake --install build
           tar -czf "/tmp/${ASSET}" -C /tmp/btop-pkg .
