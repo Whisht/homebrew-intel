@@ -166,21 +166,19 @@ jobs:
             -DBUILD_SHARED_LIBS=OFF \
             -DLIBRESSL_APPS=OFF \
             -DLIBRESSL_TESTS=OFF \
-            -DOPENSSLDIR=/etc/ssl \
-            -DCMAKE_INSTALL_PREFIX=/tmp/ssl-static
+            -DOPENSSLDIR=/etc/ssl
           cmake --build /tmp/libressl-build -j4
-          cmake --install /tmp/libressl-build
           curl -fsSL "https://ftpmirror.gnu.org/gnu/wget/wget-${VERSION}.tar.gz" | tar -xz -C /tmp
           cd "/tmp/wget-${VERSION}"
           ./configure --host=x86_64-apple-darwin \
             PKG_CONFIG=/usr/bin/false \
             ac_cv_func_strchrnul=no \
             CC="clang -arch x86_64 -mmacosx-version-min=11.0" \
-            CFLAGS="-O2 -I/tmp/ssl-static/include" \
-            LDFLAGS="-L/tmp/ssl-static/lib" \
-            OPENSSL_CFLAGS="-I/tmp/ssl-static/include" \
-            OPENSSL_LIBS="/tmp/ssl-static/lib/libssl.a /tmp/ssl-static/lib/libcrypto.a" \
+            CFLAGS="-O2 -I/tmp/libressl-4.0.0/include" \
+            OPENSSL_CFLAGS="-I/tmp/libressl-4.0.0/include" \
+            OPENSSL_LIBS="/tmp/libressl-build/ssl/libssl.a /tmp/libressl-build/crypto/libcrypto.a" \
             --with-ssl=openssl \
+            --sysconfdir=/etc \
             --disable-nls \
             --without-libpsl \
             --without-libidn \
@@ -189,10 +187,10 @@ jobs:
             --disable-iri \
             --prefix=/tmp/wget-install
           make -j4
-          make install
+          make DESTDIR=/tmp/wget-root install
           mkdir -p /tmp/wget-pkg
-          cp /tmp/wget-install/bin/wget /tmp/wget-pkg/
-          cp /tmp/wget-install/share/man/man1/wget.1 /tmp/wget-pkg/ || true
+          cp /tmp/wget-root/tmp/wget-install/bin/wget /tmp/wget-pkg/
+          cp /tmp/wget-root/tmp/wget-install/share/man/man1/wget.1 /tmp/wget-pkg/ || true
           tar -czf "/tmp/${ASSET}" -C /tmp/wget-pkg .
           gh release upload prebuilt-intel "/tmp/${ASSET}" --clobber -R "${{ github.repository }}"
 
