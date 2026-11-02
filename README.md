@@ -1,95 +1,99 @@
 # homebrew-intel
 
-专为 Intel Mac (`x86_64`) 维护的 Homebrew Tap，直接拉取各开源项目在 GitHub Releases 上官方构建的 Intel 预编译二进制包（对于 `eza`、`btop`、`git-delta` 等官方未提供 macOS Intel Release 二进制的项目，由本仓库 GitHub Actions 在云端自动交叉编译为兼容 `macOS 11.0+ x86_64` 的独立预编译包并发布至本仓库 Releases），彻底跳过老款 Mac 漫长的本地源码编译。
+English | [简体中文](./README_zh.md)
 
-通过 GitHub Actions 每天自动检测上游最新 Release 并更新 `Formula/`。
+A Homebrew Tap dedicated to Intel Macs (`x86_64`). Since Homebrew officially dropped bottle support for macOS Intel (`x86_64`), installing or upgrading formulae from `homebrew-core` often triggers lengthy local compilation from source.
 
-## 使用方法
+This Tap fetches official prebuilt `x86_64-apple-darwin` binaries directly from upstream GitHub Releases. For upstream projects that do not publish macOS Intel release binaries (such as `eza`, `btop`, `git-delta`, `git`, and `wget`), this repository's GitHub Actions workflow automatically cross-compiles standalone binaries targeting `macOS 11.0+ x86_64` and publishes them to this repository's Releases—completely eliminating local compilation and heavy `lib*` dependency chains on Intel Macs.
 
-### 1. 添加 Tap
+All formulae in `Formula/` are automatically checked and updated daily via GitHub Actions.
+
+## Usage
+
+### 1. Add the Tap
 ```bash
 brew tap whisht/intel
 ```
 
-### 2. 安装或替换现有软件
-如果之前已通过 `homebrew-core` 安装过同名软件，可先卸载原版（或直接指定 Tap 安装）：
+### 2. Install or Replace Existing Packages
+If you previously installed the same package from `homebrew-core`, uninstall it first (or specify this Tap explicitly):
 ```bash
-# 安装指定工具（免本地编译）
+# Install prebuilt Intel binaries directly (zero local compilation)
 brew install whisht/intel/eza
 brew install whisht/intel/ripgrep
 brew install whisht/intel/gh
 brew install whisht/intel/yazi
 ```
 
-### 3. 日常更新
+### 3. Daily Updates
 ```bash
 brew update && brew upgrade
 ```
 
-## 已收录软件列表（共 54 个，已排除底层依赖库）
+## Included Packages (54 Total, Zero `lib*` Dependencies)
 
-### 1. 本地常用 CLI 工具
-- `bat` (`sharkdp/bat`)
-- `carapace` (`carapace-sh/carapace-bin` — 多 Shell 多命令参数补全器)
-- `curl` (`stunnel/static-curl` — 静态编译独立 `x86_64` 包，内置 HTTP/3、Zstd、Brotli，零动态库依赖)
-- `eza` (`eza-community/eza` — 云端自动预编译独立 `x86_64` 包，无需 `libgit2` 依赖)
-- `fish` (`fish-shell/fish-shell` — 官方 Universal 预编译包，内置 PCRE2/terminfo，零动态库依赖)
-- `fzf` (`junegunn/fzf`)
-- `gh` (`cli/cli`)
-- `git` (`git/git` — 云端自动预编译独立 `x86_64` 包，无需 `gettext`/`pcre2` 依赖)
-- `git-lfs` (`git-lfs/git-lfs`)
-- `jj` (`jj-vcs/jj`)
-- `pandoc` (`jgm/pandoc`)
-- `ripgrep` (`BurntSushi/ripgrep`)
-- `starship` (`starship/starship`)
-- `wget` (`mirror/wget` — 云端自动静态链接 LibreSSL 预编译独立 `x86_64` 包，零外部动态库依赖)
-- `yazi` (`sxyazi/yazi`)
-- `zoxide` (`ajeetdsouza/zoxide`)
+### 1. Core & Daily CLI Tools
+- `bat` (`sharkdp/bat`) — `cat(1)` clone with syntax highlighting and Git integration
+- `carapace` (`carapace-sh/carapace-bin`) — Multi-shell multi-command argument completer
+- `curl` (`stunnel/static-curl`) — Static standalone `x86_64` build with HTTP/3, Zstd, and Brotli (zero dynamic library dependencies)
+- `eza` (`eza-community/eza`) — Modern replacement for `ls` (cloud-built standalone `x86_64` binary, no `libgit2` dependency)
+- `fish` (`fish-shell/fish-shell`) — Official Universal prebuilt binary with embedded PCRE2 and terminfo (zero external library dependencies)
+- `fzf` (`junegunn/fzf`) — Command-line fuzzy finder written in Go
+- `gh` (`cli/cli`) — GitHub’s official command-line tool
+- `git` (`git/git`) — Distributed revision control system (cloud-built standalone `x86_64` binary, no `gettext`/`pcre2` dependencies)
+- `git-lfs` (`git-lfs/git-lfs`) — Git extension for versioning large files
+- `jj` (`jj-vcs/jj`) — Git-compatible DVCS that is both simple and powerful
+- `pandoc` (`jgm/pandoc`) — Swiss-army knife of markup format conversion
+- `ripgrep` (`BurntSushi/ripgrep`) — Ultra-fast recursive search tool (`rg`)
+- `starship` (`starship/starship`) — Cross-shell prompt for astronauts
+- `wget` (`mirror/wget`) — Internet file retriever (cloud-built standalone `x86_64` binary statically linked with LibreSSL)
+- `yazi` (`sxyazi/yazi`) — Blazing fast terminal file manager written in Rust
+- `zoxide` (`ajeetdsouza/zoxide`) — Smarter `cd` command that learns your habits
 
-### 2. Omarchy 现代化 Shell Tools & TUIs
-参考 [Omarchy Shell Tools](https://omarchy.org/manual/shell-tools/) 与 [Omarchy TUIs](https://omarchy.org/manual/tuis/)：
-- `fd` (`sharkdp/fd`) — `find` 现代替代
-- `try` (`tobi/try`) — 临时实验目录管理器 (`try`)
-- `lazygit` (`jesseduffield/lazygit`) — Git 终端 TUI
-- `lazydocker` (`jesseduffield/lazydocker`) — Docker 终端 TUI
-- `btop` (`aristocratos/btop`) — 系统资源监控器（云端自动预编译 `x86_64` 包）
-- `herdr` (`herdrdev/herdr`) — 持久终端会话与 AI 编程 Agent 多路复用器
-- `cliamp` (`bjarneo/cliamp`) — 复古 Winamp 风格终端音乐播放器
-- `fastfetch` (`fastfetch-cli/fastfetch`) — 极速系统信息展示
-- `zellij` (`zellij-org/zellij`) — 现代终端复用器
-- `neovim` (`neovim/neovim`) — 现代终端编辑器
-- `gum` (`charmbracelet/gum`) — 交互式 Shell 脚本组件
-- `glow` (`charmbracelet/glow`) — 终端 Markdown 阅读器
-- `jq` (`jqlang/jq`) — 命令行 JSON 处理器
-- `dust` (`bootandy/dust`) — `du` 磁盘空间分析替代
-- `duf` (`muesli/duf`) — `df` 磁盘统计替代
-- `bottom` (`ClementTsang/bottom`) — `btm` 进程与系统监控
-- `hyperfine` (`sharkdp/hyperfine`) — 命令行基准测试
-- `xh` (`ducaale/xh`) — HTTP 请求工具
-- `tealdeer` (`tealdeer-rs/tealdeer`) — 极速 Rust 版 `tldr`
+### 2. Omarchy Modern Shell Tools & TUIs
+Curated from [Omarchy Shell Tools](https://omarchy.org/manual/shell-tools/) and [Omarchy TUIs](https://omarchy.org/manual/tuis/):
+- `fd` (`sharkdp/fd`) — Simple, fast, and user-friendly alternative to `find`
+- `try` (`tobi/try`) — Ephemeral experiment directory manager (`try`)
+- `lazygit` (`jesseduffield/lazygit`) — Simple terminal UI for Git commands
+- `lazydocker` (`jesseduffield/lazydocker`) — Terminal UI for Docker and `docker-compose`
+- `btop` (`aristocratos/btop`) — Resource monitor for CPU, memory, disks, network, and processes (cloud-built standalone `x86_64` package)
+- `herdr` (`herdrdev/herdr`) — Persistent terminal workspace and session multiplexer for coding agents
+- `cliamp` (`bjarneo/cliamp`) — Retro Winamp-inspired terminal music player
+- `fastfetch` (`fastfetch-cli/fastfetch`) — Fast system information tool written in C
+- `zellij` (`zellij-org/zellij`) — Modern terminal workspace and multiplexer
+- `neovim` (`neovim/neovim`) — Vim-fork focused on extensibility and usability
+- `gum` (`charmbracelet/gum`) — Tool for glamorous interactive shell scripts
+- `glow` (`charmbracelet/glow`) — Render Markdown on the CLI
+- `jq` (`jqlang/jq`) — Lightweight and flexible command-line JSON processor
+- `dust` (`bootandy/dust`) — More intuitive version of `du` in Rust
+- `duf` (`muesli/duf`) — Disk Usage/Free utility (`df` alternative)
+- `bottom` (`ClementTsang/bottom`) — Cross-platform graphical process/system monitor (`btm`)
+- `hyperfine` (`sharkdp/hyperfine`) — Command-line benchmarking tool
+- `xh` (`ducaale/xh`) — Friendly and fast tool for sending HTTP requests
+- `tealdeer` (`tealdeer-rs/tealdeer`) — Very fast Rust implementation of `tldr`
 
-### 3. dlvhdr CLI Gems 精选工具
-参考 [dlvhdr's List of CLI Gems](https://www.dlvhdr.me/posts/cli-tools)：
-- `atuin` (`atuinsh/atuin`) — 现代化多端同步 Shell 历史记录
-- `direnv` (`direnv/direnv`) — 基于目录自动加载/卸载环境变量
-- `serpl` (`yassinebridi/serpl`) — 类似 VS Code 的全局搜索替换 TUI
-- `procs` (`dalance/procs`) — 现代 `ps` 替代工具
-- `sd` (`chmln/sd`) — 直观快速的 `sed` 查找替换替代工具
-- `curlie` (`rs/curlie`) — 兼具 `curl` 性能与 `httpie` 易用性的 HTTP 工具
-- `jnv` (`ynqa/jnv`) — 交互式 JSON 导航与 `jq` 过滤器 TUI
-- `gojq` (`itchyny/gojq`) — 纯 Go 实现的 `jq`
-- `fx` (`antonmedv/fx`) — 终端交互式 JSON 查看与处理工具
-- `jless` (`PaulJuliusMartinez/jless`) — 命令行 JSON 分页阅读器
-- `jqp` (`noahgorstein/jqp`) — `jq` 交互式 TUI 演练场
-- `git-delta` (`dandavison/delta`) — Git / diff 语法高亮分页器（云端自动预编译 `x86_64` 包）
-- `diffnav` (`dlvhdr/diffnav`) — 基于 `delta` 的带文件树 Git diff 查看器
-- `gh-dash` (`dlvhdr/gh-dash`) — GitHub PR 与 Issue 终端仪表盘 TUI
-- `svu` (`caarlos0/svu`) — 语义化版本号管理工具
-- `sesh` (`joshmedeski/sesh`) — `tmux` 智能终端会话管理器
-- `k9s` (`derailed/k9s`) — Kubernetes 集群管理 TUI
-- `freeze` (`charmbracelet/freeze`) — 将代码与终端输出生成精美图片
-- `vhs` (`charmbracelet/vhs`) — 用代码编写并录制终端演示 GIF
+### 3. dlvhdr's CLI Gems
+Curated from [dlvhdr's List of CLI Gems](https://www.dlvhdr.me/posts/cli-tools):
+- `atuin` (`atuinsh/atuin`) — Magical shell history with encrypted multi-device sync
+- `direnv` (`direnv/direnv`) — Load and unload environment variables depending on the current directory
+- `serpl` (`yassinebridi/serpl`) — VS Code-style global search and replace TUI
+- `procs` (`dalance/procs`) — Modern replacement for `ps`
+- `sd` (`chmln/sd`) — Intuitive find & replace CLI (`sed` alternative)
+- `curlie` (`rs/curlie`) — The power of `curl`, the ease of use of `httpie`
+- `jnv` (`ynqa/jnv`) — Interactive JSON navigator and `jq` filter editor
+- `gojq` (`itchyny/gojq`) — Pure Go implementation of `jq`
+- `fx` (`antonmedv/fx`) — Terminal JSON viewer and processor
+- `jless` (`PaulJuliusMartinez/jless`) — Command-line JSON pager
+- `jqp` (`noahgorstein/jqp`) — TUI playground to experiment with `jq`
+- `git-delta` (`dandavison/delta`) — Syntax-highlighting pager for `git`, `diff`, and `grep` output (cloud-built `x86_64` binary)
+- `diffnav` (`dlvhdr/diffnav`) — Git diff pager based on `delta` with a file tree
+- `gh-dash` (`dlvhdr/gh-dash`) — Rich terminal UI dashboard for GitHub PRs and issues
+- `svu` (`caarlos0/svu`) — Semantic Version Utility
+- `sesh` (`joshmedeski/sesh`) — Smart terminal session manager for `tmux`
+- `k9s` (`derailed/k9s`) — Kubernetes CLI to manage your clusters in style
+- `freeze` (`charmbracelet/freeze`) — Generate images of code and terminal output
+- `vhs` (`charmbracelet/vhs`) — Write terminal GIFs as code
 
-## 如何添加新软件
+## How to Add a New Package
 
-只需在 [`packages.json`](./packages.json) 中新增一项配置并推送到 `main` 分支，GitHub Actions（或本地运行 `python3 scripts/update_formulas.py`）会自动拉取最新 Release 计算 SHA256 并生成对应的 `Formula/<name>.rb`。
+Add an entry to [`packages.json`](./packages.json) and push to the `main` branch. GitHub Actions (or running `python3 scripts/update_formulas.py <name>` locally) will automatically resolve the latest release asset, compute its SHA256 digest, and generate `Formula/<name>.rb`.
