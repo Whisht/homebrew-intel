@@ -1,9 +1,9 @@
 class Carapace < Formula
   desc "Multi-shell multi-command argument completer"
   homepage "https://carapace.sh"
-  url "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.1/carapace-bin_1.8.1_darwin_amd64.tar.gz"
-  version "1.8.1"
-  sha256 "c91c27d019237e8c3e09e9488c3b49681d14c9b85c29b2799529b2b5ab752183"
+  url "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.2/carapace-bin_1.8.2_darwin_amd64.tar.gz"
+  version "1.8.2"
+  sha256 "4ea74b50828bbef60ebb1726829e52788b2c08817ec776fb121b2886d03ab5fe"
 
   def install
     bin.install "carapace"
