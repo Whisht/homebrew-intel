@@ -1,9 +1,9 @@
 class Svu < Formula
   desc "Semantic Version Utility"
   homepage "https://github.com/caarlos0/svu"
-  url "https://github.com/caarlos0/svu/releases/download/v3.4.1/svu_3.4.1_darwin_all.tar.gz"
-  version "3.4.1"
-  sha256 "aeec0a735f12d6313c5b4f295ac2f86e00b56571d241abe5aa0306b41f43efd7"
+  url "https://github.com/caarlos0/svu/releases/download/v3.4.4/svu_3.4.4_darwin_all.tar.gz"
+  version "3.4.4"
+  sha256 "d29079db5bf50f25b805ca8511457d9ea067a3efb7ccbf155d24e512d3dcd2be"
 
   def install
     bin.install "svu"
