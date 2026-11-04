@@ -1,9 +1,9 @@
 class Atuin < Formula
   desc "Improved shell history for zsh, bash, fish and nushell"
   homepage "https://github.com/atuinsh/atuin"
-  url "https://github.com/atuinsh/atuin/releases/download/v18.24.4/atuin-x86_64-apple-darwin.tar.gz"
-  version "18.24.4"
-  sha256 "aeeb67d1f3277e8bd92f2773ae383cad43ac49161a08aa4b9142122c99e1305e"
+  url "https://github.com/atuinsh/atuin/releases/download/v18.24.5/atuin-x86_64-apple-darwin.tar.gz"
+  version "18.24.5"
+  sha256 "220450dd55eee9a0b30797bb02412d90849c839f90ac1ae377a877c282e2deaa"
 
   def install
     bin.install "atuin"
