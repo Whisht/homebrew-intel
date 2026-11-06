@@ -1,9 +1,9 @@
 class Fastfetch < Formula
   desc "Like neofetch, but much faster because written mostly in C"
   homepage "https://github.com/fastfetch-cli/fastfetch"
-  url "https://github.com/fastfetch-cli/fastfetch/releases/download/2.70.0/fastfetch-macos-universal.tar.gz"
-  version "2.70.0"
-  sha256 "8e3e2f3583a5b43ea20c451edfe0dac7172835c5b7de97a96347168f31106558"
+  url "https://github.com/fastfetch-cli/fastfetch/releases/download/2.71.0/fastfetch-macos-universal.tar.gz"
+  version "2.71.0"
+  sha256 "6e503980ac268b072259f00e5c439eb90a420535f3593704c096b5b3bea64199"
 
   def install
     bin.install "usr/bin/fastfetch"
