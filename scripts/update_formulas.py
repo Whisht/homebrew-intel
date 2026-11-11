@@ -107,6 +107,11 @@ def build_install_lines(pkg: dict, version: str, tag: str) -> list[str]:
         lines.append(f'prefix.install Dir["{prefix_dir}/*"]')
         return lines
 
+    if app_exec := pkg.get("app_bundle_exec"):
+        lines.append('prefix.install Dir["*.app"]')
+        lines.append(f'bin.write_exec_script prefix/"{app_exec}"')
+        return lines
+
     for src, dst in pkg.get("bin_map", {}).items():
         formatted_src = src.format(version=version, tag=tag)
         lines.append(f'bin.install "{formatted_src}" => "{dst}"')

@@ -30,7 +30,7 @@ brew install whisht/intel/yazi
 brew update && brew upgrade
 ```
 
-## Included Packages (54 Total, Zero `lib*` Dependencies)
+## Included Packages (55 Total, Zero `lib*` Dependencies)
 
 ### 1. Core & Daily CLI Tools
 - `bat` (`sharkdp/bat`) — `cat(1)` clone with syntax highlighting and Git integration
@@ -46,6 +46,7 @@ brew update && brew upgrade
 - `pandoc` (`jgm/pandoc`) — Swiss-army knife of markup format conversion
 - `ripgrep` (`BurntSushi/ripgrep`) — Ultra-fast recursive search tool (`rg`)
 - `starship` (`starship/starship`) — Cross-shell prompt for astronauts
+- `terminal-notifier` (`julienXX/terminal-notifier`) — Send macOS user notifications from the command line (official Universal `.app` bundle with a `bin` wrapper)
 - `wget` (`mirror/wget`) — Internet file retriever (cloud-built standalone `x86_64` binary statically linked with LibreSSL)
 - `yazi` (`sxyazi/yazi`) — Blazing fast terminal file manager written in Rust
 - `zoxide` (`ajeetdsouza/zoxide`) — Smarter `cd` command that learns your habits

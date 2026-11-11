@@ -125,6 +125,13 @@
     "bin": ["starship"]
   },
   {
+    "name": "terminal-notifier",
+    "desc": "Send macOS User Notifications from the command-line",
+    "repo": "julienXX/terminal-notifier",
+    "asset_pattern": "terminal-notifier-{version}.zip",
+    "app_bundle_exec": "terminal-notifier.app/Contents/MacOS/terminal-notifier"
+  },
+  {
     "name": "yazi",
     "desc": "Blazing fast terminal file manager written in Rust, based on async I/O",
     "repo": "sxyazi/yazi",
