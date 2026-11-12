@@ -28,7 +28,7 @@ brew install whisht/intel/yazi
 brew update && brew upgrade
 ```
 
-## 已收录软件列表（共 55 个，已排除底层依赖库）
+## 已收录软件列表（共 56 个，已排除底层依赖库）
 
 ### 1. 本地常用 CLI 工具
 - `bat` (`sharkdp/bat`)
@@ -45,6 +45,7 @@ brew update && brew upgrade
 - `ripgrep` (`BurntSushi/ripgrep`)
 - `starship` (`starship/starship`)
 - `terminal-notifier` (`julienXX/terminal-notifier` — 命令行发送 macOS 系统通知，直接安装官方 Universal `.app` 包并生成 `bin` 包装脚本)
+- `tokless` (`HoangP8/tokless` — 面向 AI 编程 Harness 的统一工具流水线，直接安装上游预编译 `x86_64` 单文件二进制并重命名为 `tokless`)
 - `wget` (`mirror/wget` — 云端自动静态链接 LibreSSL 预编译独立 `x86_64` 包，零外部动态库依赖)
 - `yazi` (`sxyazi/yazi`)
 - `zoxide` (`ajeetdsouza/zoxide`)

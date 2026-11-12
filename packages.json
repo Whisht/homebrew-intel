@@ -132,6 +132,15 @@
     "app_bundle_exec": "terminal-notifier.app/Contents/MacOS/terminal-notifier"
   },
   {
+    "name": "tokless",
+    "desc": "Unified pipeline for efficient and effective coding harnesses",
+    "repo": "HoangP8/tokless",
+    "asset_pattern": "tokless-darwin-x64",
+    "bin_map": {
+      "tokless-darwin-x64": "tokless"
+    }
+  },
+  {
     "name": "yazi",
     "desc": "Blazing fast terminal file manager written in Rust, based on async I/O",
     "repo": "sxyazi/yazi",
