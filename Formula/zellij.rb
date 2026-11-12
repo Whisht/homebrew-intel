@@ -1,9 +1,9 @@
 class Zellij < Formula
   desc "Pluggable terminal workspace, with terminal multiplexer as the base feature"
   homepage "https://github.com/zellij-org/zellij"
-  url "https://github.com/zellij-org/zellij/releases/download/v0.45.1/zellij-x86_64-apple-darwin.tar.gz"
-  version "0.45.1"
-  sha256 "8e8bea22737d1652278c51fc5c26c7c22c9855d0ebb9634a84b8873823093114"
+  url "https://github.com/zellij-org/zellij/releases/download/v0.46.0/zellij-x86_64-apple-darwin.tar.gz"
+  version "0.46.0"
+  sha256 "e3b6197af04b286f74f7a9f5f519e5a8cf048be65f0371a32b0d60abac97384a"
 
   def install
     bin.install "zellij"

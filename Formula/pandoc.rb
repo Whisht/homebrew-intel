@@ -1,9 +1,9 @@
 class Pandoc < Formula
   desc "Swiss-army knife of markup format conversion"
   homepage "https://github.com/jgm/pandoc"
-  url "https://github.com/jgm/pandoc/releases/download/3.13/pandoc-3.13-x86_64-macOS.zip"
-  version "3.13"
-  sha256 "1823278715aa405aaf21b59cde5dc789346aa8d4fc307467f9a9ee84162bedc5"
+  url "https://github.com/jgm/pandoc/releases/download/3.14/pandoc-3.14-x86_64-macOS.zip"
+  version "3.14"
+  sha256 "891708579061e7b1c1a6ce0df30ebb3cb2b6d0ca045ed3c8554ab830c1e0c270"
 
   def install
     bin.install "bin/pandoc"
