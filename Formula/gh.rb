@@ -1,9 +1,9 @@
 class Gh < Formula
   desc "GitHub command-line tool"
   homepage "https://github.com/cli/cli"
-  url "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_macOS_amd64.zip"
-  version "2.103.3"
-  sha256 "a2f86418f4350ae6e9ec60d5000bdf7665728436946a97fc27fe50e6ae752682"
+  url "https://github.com/cli/cli/releases/download/v2.104.0/gh_2.104.0_macOS_amd64.zip"
+  version "2.104.0"
+  sha256 "a8c2a708dbae89dc7c05ba7b0beafc95bd8d09ab4a3505467b77d32ebf364dc6"
 
   def install
     bin.install "bin/gh"
