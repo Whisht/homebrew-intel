@@ -100,7 +100,11 @@ def normalize_version(tag: str, pkg_name: str) -> str:
 def build_install_lines(pkg: dict, version: str, tag: str) -> list[str]:
     lines: list[str] = []
     if pkg.get("install_prefix"):
-        lines.append('prefix.install Dir["*"]')
+        # Homebrew stages inside the archive's single top-level directory, so the
+        # tree lands at the keg root; ".brew_home" is Homebrew's own staging dir.
+        lines.append('prefix.install(Dir["{*,.[!.]*}"] - [".brew_home"])')
+        if symlink_glob := pkg.get("bin_symlink_glob"):
+            lines.append(f'bin.install_symlink Dir["#{{prefix}}/{symlink_glob}"]')
         return lines
 
     if prefix_dir := pkg.get("install_prefix_dir"):

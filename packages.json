@@ -484,5 +484,14 @@
     "zsh_completion": ["completions/vhs.zsh"],
     "bash_completion": ["completions/vhs.bash"],
     "fish_completion": ["completions/vhs.fish"]
+  },
+  {
+    "name": "tinytex",
+    "desc": "Lightweight, portable LaTeX distribution based on TeX Live",
+    "homepage": "https://yihui.org/tinytex/",
+    "repo": "rstudio/tinytex-releases",
+    "asset_pattern": "TinyTeX-darwin-{tag}.tar.xz",
+    "install_prefix": true,
+    "bin_symlink_glob": "bin/*/*"
   }
 ]
