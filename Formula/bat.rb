@@ -1,9 +1,9 @@
 class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
-  url "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-apple-darwin.tar.gz"
-  version "0.26.1"
-  sha256 "830d63b0bba1fa040542ec569e3cf77f60d3356b9de75116a344b061e0894245"
+  url "https://github.com/sharkdp/bat/releases/download/v0.27.0/bat-v0.27.0-x86_64-apple-darwin.tar.gz"
+  version "0.27.0"
+  sha256 "29029a4aaecef1ec873aa319047bf70803026bd3eaff664011fff650f73355f9"
 
   def install
     bin.install "bat"
